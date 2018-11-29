@@ -1,0 +1,11 @@
+// Add your native dependencies here:
+
+android {
+  defaultConfig {  
+    generatedDensities = []
+    applicationId = "com.korawit.blescanner"
+  }
+  aaptOptions {  
+    additionalParameters "--no-version-vectors"  
+  }  
+} 
