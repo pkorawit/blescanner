@@ -1,12 +1,24 @@
 <template>
   <Page>
-    <ActionBar title="BLE Scanner"/>
+    <ActionBar title="BLE Scanner">
+      <ActionItem
+        @tap="onTapShare"
+        ios.systemIcon="9"
+        ios.position="left"
+        android.systemIcon="ic_menu_share"
+        android.position="actionBar"
+      />
+    </ActionBar>
     <StackLayout>
       <Label class="message" :text="bleStatus" color="blue"/>
-      <Button text="Scan" @tap="onButtonTap"/>
-      <ListView for="item in items" @itemTap="onItemTap">
+      <Button text="Scan" @tap="onScanTap"/>
+      <ListView class="list-group" for="(item, index) in items" @itemTap="onItemTap">
         <v-template>
-          <Label class="list-item" :text="item.text"/>
+          <FlexboxLayout flexDirection="row" class="list-group-item">
+            <Label :text="item.UUID" class="list-group-item-heading" style="width: 40%"/>
+            <Label :text="item.name" class="list-group-item-heading" style="width: 40%"/>
+            <Label :text="item.distance" class="list-group-item-heading" style="width: 20%"/>
+          </FlexboxLayout>
         </v-template>
       </ListView>
     </StackLayout>
@@ -14,6 +26,23 @@
 </template>
 <script>
 import bluetooth from "nativescript-bluetooth";
+
+function calculateDistance(rssi) {
+  var txPower = -86; //hard coded power value. Usually ranges between -59 to -65
+
+  if (rssi == 0) {
+    return -1.0;
+  }
+
+  var ratio = (rssi * 1.0) / txPower;
+  if (ratio < 1.0) {
+    return Math.pow(ratio, 10);
+  } else {
+    var distance = 0.89976 * Math.pow(ratio, 7.7095) + 0.111;
+    return distance;
+  }
+}
+
 export default {
   data() {
     return {
@@ -24,17 +53,18 @@ export default {
   },
   methods: {
     onItemTap(event) {
-      console.log(event.item.text);
+      console.log(event.item.UUID);
     },
-    onButtonTap() {
-      this.items = []
+    onScanTap() {
+      this.items = [];
       bluetooth
         .startScanning({
           serviceUUIDs: [],
           seconds: 4,
           onDiscovered: peripheral => {
             console.log("Periperhal found with UUID: " + peripheral.UUID);
-            this.items.push({text:peripheral.UUID + '-' + peripheral.name})
+            peripheral.distance = calculateDistance(peripheral.RSSI).toFixed(2);
+            this.items.push(peripheral);
           }
         })
         .then(
