@@ -15,9 +15,9 @@
       <ListView class="list-group" for="(item, index) in items" @itemTap="onItemTap">
         <v-template>
           <FlexboxLayout flexDirection="row" class="list-group-item">
-            <Label :text="item.UUID" class="list-group-item-heading" style="width: 40%"/>
-            <Label :text="item.name" class="list-group-item-heading" style="width: 40%"/>
-            <Label :text="item.distance" class="list-group-item-heading" style="width: 20%"/>
+            <Label :text="item.UUID" class="list-group-item-heading" style="width: 40%" :color="item.color"/>
+            <Label :text="item.name" class="list-group-item-heading" style="width: 40%" :color="item.color"/>
+            <Label :text="item.distance" class="list-group-item-heading" style="width: 20%" :color="item.color"/>
           </FlexboxLayout>
         </v-template>
       </ListView>
@@ -28,7 +28,7 @@
 import bluetooth from "nativescript-bluetooth";
 
 function calculateDistance(rssi) {
-  var txPower = -86; //hard coded power value. Usually ranges between -59 to -65
+  var txPower = -64; //hard coded power value. Usually ranges between -59 to -65
 
   if (rssi == 0) {
     return -1.0;
@@ -64,6 +64,12 @@ export default {
           onDiscovered: peripheral => {
             console.log("Periperhal found with UUID: " + peripheral.UUID);
             peripheral.distance = calculateDistance(peripheral.RSSI).toFixed(2);
+            if(peripheral.distance > 4){
+              peripheral.color = 'red';
+            }
+            else{
+              peripheral.color = 'black';
+            }
             this.items.push(peripheral);
           }
         })
