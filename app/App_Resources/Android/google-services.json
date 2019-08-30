@@ -1,0 +1,40 @@
+{
+  "project_info": {
+    "project_number": "289848578719",
+    "firebase_url": "https://demowebclient.firebaseio.com",
+    "project_id": "demowebclient",
+    "storage_bucket": "demowebclient.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:289848578719:android:368348a703496641",
+        "android_client_info": {
+          "package_name": "com.korawit.blescanner"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "289848578719-dohna7e8m5et3gvm779h435gafkueqap.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyC8z2TaIGwNbUlZYn1nldlcNw1GOxYBgKk"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "289848578719-dohna7e8m5et3gvm779h435gafkueqap.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
